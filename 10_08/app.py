@@ -31,8 +31,7 @@ def save_post():
         'reg_date': datetime.now()
     }
     db.post.insert_one(post)
-    posts =db.post.find_one({'title': title })
-    return render_template('index.html', posts=posts)
+    return render_template('index.html'),
 
 
 @app.route('/post', methods=['GET'])

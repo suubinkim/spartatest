@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
           crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
 
     <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -51,11 +50,6 @@
             border: black solid;
             border-radius: 5px;
         }
-
-        .modal-content {
-        width: 600px;
-        max-width: 80%;
-        }
     </style>
     <script>
         $(document).ready(function () {
@@ -88,13 +82,9 @@
                 url: "/post",
                 data: {title: url, content: comment},
                 success: function (response) { // 성공하면
-                    if (response["result"] == "success") {
                         alert("포스팅 성공!");
                         // 3. 성공 시 페이지 새로고침하기
                         window.location.reload();
-                    } else {
-                        alert("서버 오류!");
-                    }
                 }
             })
         }
@@ -116,9 +106,9 @@
         function makeListPost(post, index) {
             let tempHtml = ` <tr>
                       <th scope="row">${index + 1}</th>
-                      <td><a href="#;" onclick='$("#modal-post").addClass("is-active")'>${post['title']}</a></td>
+                      <td><a href="#" data-toggle="modal" data-target="#exampleModal">${post['title']}</a></td>
                       <td>${post['reg_date']}</button></td>
-                      <td  >0</td>
+                      <td>0</td>
                       <td><button type="button" class="btn btn-danger" onclick="deleteArticle(${post['idx']})">삭제</button></td>
                       <td><button type="button" class="btn btn-primary">수정</button></td>
                       </tr>
@@ -169,50 +159,39 @@
         </div>
     </div>
     <table class="table">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">타이틀</th>
-                  <th scope="col">날짜</th>
-                  <th scope="col">조회</th>
-                  <th scope="col">삭제</th>
-                  <th scope="col">수정</th>
-                </tr>
-              </thead>
-              <tbody id="list-post">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">타이틀</th>
+            <th scope="col">날짜</th>
+            <th scope="col">조회</th>
+            <th scope="col">삭제</th>
+            <th scope="col">수정</th>
+        </tr>
+        </thead>
+        <tbody id="list-post">
 
-              </tbody>
+        </tbody>
     </table>
-    <div class="modal" id="modal-post">
-                <div class="modal-background" onclick='$("#modal-post").removeClass("is-active")'></div>
-                <div class="modal-content">
-                    <div class="box">
-                        <article class="media">
-                            <div class="media-content">
-                                <div class="field">
-                                    <p class="control">
-                                       <td>${post['title']}</td>
-                                    </p>
-                                </div>
-                                <nav class="level is-mobile">
-                                    <div class="level-left">
-
-                                    </div>
-                                    <div class="level-right">
-                                        <div class="level-item">
-                                            <a class="button is-sparta is-outlined"
-                                               onclick='$("#modal-post").removeClass("is-active")'>close</a>
-                                        </div>
-                                    </div>
-                                </nav>
-                            </div>
-                        </article>
-                    </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">{{ post_title }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <button class="modal-close is-large" aria-label="close"
-                        onclick='$("#modal-post").removeClass("is-active")'></button>
+                <div class="modal-body">
+                    {{ post_content }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
             </div>
-
+        </div>
+    </div>
 </div>
 </body>
 
