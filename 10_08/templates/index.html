@@ -75,24 +75,43 @@
         function postArticle() {
             let url = $("#post-url").val();
             let comment = $("#post-comment").val();
+            let idx = $("#post-idx").val();
 
-            // 2. memo에 POST 방식으로 메모 생성 요청하기
-            $.ajax({
-                type: "POST",
-                url: "/post",
-                data: {title: url, content: comment},
+            if (idx != ""){
+                 $.ajax({
+                type: "PUT",
+                url: `/post/${idx}`,
+                data: {title :url, content:comment},
                 success: function (response) { // 성공하면
+                    if (response["result"] == "success") {
+                        alert("수정 성공!");
+                        // 3. 성공 시 페이지 새로고침하기
+                        window.location.reload();
+                    } else {
+                        alert("서버 오류!");
+                    }
+                }
+            })
+            } else {
+
+                // 2. memo에 POST 방식으로 메모 생성 요청하기
+                $.ajax({
+                    type: "POST",
+                    url: "/post",
+                    data: {title: url, content: comment},
+                    success: function (response) { // 성공하면
                         alert("포스팅 성공!");
                         // 3. 성공 시 페이지 새로고침하기
                         window.location.reload();
-                }
-            })
+                    }
+                })
+            }
         }
 
         function showArticles() {
             $.ajax({
                 type: "GET",
-                url: "/post",
+                url: "/posts",
                 data: {},
                 success: function (response) {
                     let posts = response["posts"];
@@ -103,17 +122,54 @@
             })
         }
 
+        function getArticle(idx) {
+            $.ajax({
+                type: "GET",
+                url: `/post?idx=${idx}`,
+                data: {},
+                success: function (response) {
+                    let posts = response["posts"];
+                        $("#post-url").val(posts['title']);
+                        $("#post-comment").val(posts['content']);
+                        $("#post-idx").val(idx);
+                        $("#post-box").show();
+                // 다시 버튼을 클릭하면, 박스 닫기를 할 수 있게 텍스트 바꿔두기
+                        $("#btn-post-box").text("포스팅 박스 닫기");
+
+                }
+            })
+
+        }
+
         function makeListPost(post, index) {
             let tempHtml = ` <tr>
                       <th scope="row">${index + 1}</th>
-                      <td><a href="#" data-toggle="modal" data-target="#exampleModal">${post['title']}</a></td>
+                      <td><a href="#" data-toggle="modal" data-target="#exampleModal" onclick="readArticle(${post['idx']})">${post['title']}</a></td>
                       <td>${post['reg_date']}</button></td>
-                      <td>0</td>
+                      <td>${post['read_count']}</td>
                       <td><button type="button" class="btn btn-danger" onclick="deleteArticle(${post['idx']})">삭제</button></td>
-                      <td><button type="button" class="btn btn-primary">수정</button></td>
+                      <td><button type="button" class="btn btn-primary" onclick="getArticle(${post['idx']})">수정</button></td>
                       </tr>
                     `;
             $("#list-post").append(tempHtml);
+        }
+
+        function readArticle(idx){
+            $.ajax({
+                type: "PUT",
+                url: `/post`,
+                data: {idx:idx},
+                success: function (response) { // 성공하면
+                    let post=response["posts"];
+                    console.log(post)
+                    let title= post['title'];
+                    let content = post['content'];
+                    $('#modal-title').text(title);
+                    $('#modal-content').text(content);
+
+
+                }
+            })
         }
 
         function deleteArticle(idx) {
@@ -155,6 +211,7 @@
                 <label for="post-comment">간단한 내용</label>
                 <textarea id="post-comment" class="form-control" rows="2"></textarea>
             </div>
+            <input id="post-idx" class="form-control" placeholder="" style="display: none">
             <button type="button" class="btn btn-primary" onclick="postArticle()">기사저장</button>
         </div>
     </div>
@@ -173,21 +230,17 @@
 
         </tbody>
     </table>
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="modal-title"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">{{ post_title }}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <h5 class="modal-title" id="modal-title"></h5>
                 </div>
-                <div class="modal-body">
-                    {{ post_content }}
+                <div class="modal-body" id="modal-content">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick="window.location.reload()">Close</button>
                 </div>
             </div>
         </div>

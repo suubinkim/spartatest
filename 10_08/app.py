@@ -28,20 +28,41 @@ def save_post():
         'idx': max_value,
         'title': title,
         'content': content,
-        'reg_date': datetime.now()
+        'reg_date': datetime.now(),
+        'read_count': 0
     }
     db.post.insert_one(post)
-    return render_template('index.html'),
+    return {"result": "success"}
 
 
-@app.route('/post', methods=['GET'])
-def get_post():
+@app.route('/posts', methods=['GET'])
+def get_posts():
     posts = list(db.post.find({}, {'_id': False}).sort([("reg_date", -1)]))
     for a in posts:
         a['reg_date'] = a['reg_date'].strftime('%Y.%m.%d %H:%M:%S')
 
     return jsonify({"posts": posts})
 
+@app.route('/post', methods=['GET'])
+def get_post():
+    idx = request.args['idx']
+    posts = db.post.find_one({'idx': int(idx)}, {'_id': False})
+    return jsonify({"posts": posts})
+
+
+@app.route('/post/<idx>', methods=['PUT'])
+def read_post(idx):
+    db.post.update_one({'idx': int(idx)}, {'$inc': {'read_count': 1}})
+    posts = db.post.find_one({'idx': int(idx)}, {'_id': False})
+    return jsonify({"posts": posts})
+
+@app.route('/post', methods=['PUT'])
+def update_post():
+    title = request.form.get('title')
+    content = request.form.get('content')
+    idx = request.form.get('idx')
+    db.post.update_one({'idx': int(idx)},  {'$set': {'title': title, 'content': content}})
+    return {"result": "success"}
 
 @app.route('/post', methods=['DELETE'])
 def delete_post():
