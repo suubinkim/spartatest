@@ -10,7 +10,8 @@ db = client.dbStock
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    articles = list(db.articles.find({}, {'_id': False}).sort('reg_date', -1))
+    return render_template('index.html', articles=articles)
 
 
 @app.route('/post', methods=['POST'])
@@ -36,11 +37,6 @@ def save_post():
 
     return jsonify({"result": "success",'msg':'저장 성공!'})
 
-
-@app.route('/post', methods=['GET'])
-def get_post():
-    articles = list(db.articles.find({},{'_id': False}).sort('reg_date', -1))
-    return jsonify({'all_articles': articles})
 
 
 @app.route('/post', methods=['DELETE'])

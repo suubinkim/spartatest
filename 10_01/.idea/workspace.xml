@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="259d2c1e-1860-48e9-b06e-01033109987a" name="Changes" comment="10/01 test">
+      <change afterPath="$PROJECT_DIR$/../10_01-1/app.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../10_01-1/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
     </list>
@@ -51,22 +54,29 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../challenge" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PythonContentEntriesConfigurable" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings sdk-home="C:\Users\USER\Documents\weeklytest\10_01\venv\Scripts\python.exe">
+        <option name="mySdkHome" value="C:\Users\USER\Documents\weeklytest\10_01\venv\Scripts\python.exe" />
+      </console-settings>
+    </option>
   </component>
   <component name="RunManager" selected="Python.10_01">
     <configuration name="10_01" type="PythonConfigurationType" factoryName="Python">
+      <module name="10_01" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="C:\Users\USER\Documents\weeklytest\10_01\venv\Scripts\python.exe" />
+      <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app.py" />
       <option name="PARAMETERS" value="" />
@@ -140,6 +150,9 @@
       <workItem from="1633337711569" duration="377000" />
       <workItem from="1633338093153" duration="6920000" />
       <workItem from="1633401008904" duration="6000" />
+      <workItem from="1633921095788" duration="508000" />
+      <workItem from="1633921612828" duration="52000" />
+      <workItem from="1633921793798" duration="1245000" />
     </task>
     <task id="LOCAL-00001" summary="10/01 test">
       <created>1633090607830</created>
@@ -171,7 +184,7 @@
     <option name="LAST_COMMIT_MESSAGE" value="10/01 test" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/10_01$10_01.coverage" NAME="10_01 Coverage Results" MODIFIED="1633342452682" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/10_01$10_01.coverage" NAME="10_01 Coverage Results" MODIFIED="1633921124950" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/10_01$app.coverage" NAME="app Coverage Results" MODIFIED="1633090678534" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

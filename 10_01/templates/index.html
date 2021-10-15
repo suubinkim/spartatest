@@ -89,32 +89,32 @@
 
         }
 
-        function showArticles() {
-            $.ajax({
-                    type: "GET",
-                    url: "/post",
-                    data: {},
-                    success: function (response) { // 성공하면
-                        let articles = response['all_articles']
-                        for ( i=0; i < articles.length; i++) {
-                            makeListPost(articles[i],i)
-                        }
-                    }
-                })
-
-        }
-
-        function makeListPost(post, index) {
-            let temp_html = `
-            <tr>
-                  <th scope="col">${index+1}</th>
-                  <th scope="col">${post['title']}</th>
-                  <th scope="col">${post['reg_date']}</th>
-                  <th type="button" class="btn btn-danger" onclick="deleteArticle(${post['idx']})">삭제</th>
-                </tr>`
-            $('#list-post').append(temp_html)
-
-        }
+        // function showArticles() {
+        //     $.ajax({
+        //             type: "GET",
+        //             url: "/post",
+        //             data: {},
+        //             success: function (response) { // 성공하면
+        //                 let articles = response['all_articles']
+        //                 for ( i=0; i < articles.length; i++) {
+        //                     makeListPost(articles[i],i)
+        //                 }
+        //             }
+        //         })
+        //
+        // }
+        //
+        // function makeListPost(post, index) {
+        //     let temp_html = `
+        //     <tr>
+        //           <th scope="col">${index+1}</th>
+        //           <th scope="col">${post['title']}</th>
+        //           <th scope="col">${post['reg_date']}</th>
+        //           <th type="button" class="btn btn-danger" onclick="deleteArticle(${post['idx']})">삭제</th>
+        //         </tr>`
+        //     $('#list-post').append(temp_html)
+        //
+        // }
 
         function deleteArticle(idx) {
             $.ajax({
@@ -167,6 +167,13 @@
                 </tr>
               </thead>
               <tbody id="list-post">
+
+              <tr>
+                  <th scope="col">${index+1}</th>
+                  <th scope="col">${post['title']}</th>
+                  <th scope="col">${post['reg_date']}</th>
+                  <th type="button" class="btn btn-danger" onclick="deleteArticle(${post['idx']})">삭제</th>
+                </tr>
 
               </tbody>
     </table>
