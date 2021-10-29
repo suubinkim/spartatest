@@ -13,6 +13,17 @@ def index():
     posts = list(db.posts.find({}, {'_id': False}))
     return render_template('index.html', posts=posts)
 
+@app.route('/search', methods=['GET'])
+def search_article():
+    search_receive = request.args['search']
+    articles = db.posts.find({}, {'_id': False})
+
+    search_a = []
+    for article in articles:
+        if search_receive in article["title"]:
+            search_a.append(article)
+    return render_template('index.html', posts=search_a)
+
 
 @app.route('/post', methods=['POST'])
 def save_post():

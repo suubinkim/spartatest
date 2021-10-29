@@ -25,6 +25,10 @@
     <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.css"/>
+
     <title>스파르타코딩클럽 | 나홀로 메모장</title>
 
     <!-- style -->
@@ -50,8 +54,82 @@
             border: black solid;
             border-radius: 5px;
         }
+
+        .form-inline {
+            margin-left: 320px;
+        }
+
+        .pagination {
+            margin: auto;
+            margin-bottom: 10px;
+        }
+
+        .select {
+            width: 100px;
+            float: right;
+            margin-bottom: 8px;
+        }
     </style>
     <script>
+
+        let totalData = 1000;    // 총 데이터 수
+        let dataPerPage = 5;    // 한 페이지에 나타낼 데이터 수
+        let pageCount = 10;        // 한 화면에 나타낼 페이지 수
+
+        function paging(totalData, dataPerPage, pageCount, currentPage) {
+
+            console.log("currentPage : " + currentPage);
+
+            let totalPage = Math.ceil(totalData / dataPerPage);    // 총 페이지 수
+            let pageGroup = Math.ceil(currentPage / pageCount);    // 페이지 그룹
+
+            console.log("pageGroup : " + pageGroup);
+
+            let last = pageGroup * pageCount;    // 화면에 보여질 마지막 페이지 번호
+            if (last > totalPage)
+                last = totalPage;
+            let first = last - (pageCount - 1);    // 화면에 보여질 첫번째 페이지 번호
+            let next = last + 1;
+            let prev = first - 1;
+
+            console.log("last : " + last);
+            console.log("first : " + first);
+            console.log("next : " + next);
+            console.log("prev : " + prev);
+
+            let $pingingView = $("#paging");
+
+            let html = "";
+
+            if (prev > 0)
+                html += "<a href=# id='prev'><</a> ";
+
+            for (let i = first; i <= last; i++) {
+                html += "<a href='#' id=" + i + ">" + i + "</a> ";
+            }
+
+            if (last < totalPage)
+                html += "<a href=# id='next'>></a>";
+
+
+
+            $("#paging a").click(function () {
+
+                var $item = $(this);
+                var $id = $item.attr("id");
+                var selectedPage = $item.text();
+
+                if ($id == "next") selectedPage = next;
+                if ($id == "prev") selectedPage = prev;
+
+                paging(totalData, dataPerPage, pageCount, selectedPage);
+            });
+
+        }
+
+        $("document").ready(function () {
+            paging(totalData, dataPerPage, pageCount, 1);
+        });
         $(document).ready(function () {
             $("#cards-box").html("");
             showArticles();
@@ -80,11 +158,11 @@
             let content = $('#post-comment').val();
             let idx = $('#post-idx').val();
 
-            if(idx!=""){
-                 $.ajax({
+            if (idx != "") {
+                $.ajax({
                     type: "PUT",
                     url: "/post",
-                    data: {title_give: title, content_give: content, idx_give : idx},
+                    data: {title_give: title, content_give: content, idx_give: idx},
                     success: function (response) {
                         if (response["result"] == 'success') {// 성공하면
                             alert('수정 성공~');
@@ -93,7 +171,7 @@
                     }
                 })
 
-            }else {
+            } else {
                 $.ajax({
                     type: "POST",
                     url: "/post",
@@ -126,7 +204,6 @@
 
                 }
             })
-
 
 
         }
@@ -164,16 +241,19 @@
 
 
         }
-        function sortdown(){
-                 $("#up").hide();
-                $("#down").show();
-                window.location.reload();
+
+        function sortdown() {
+            $("#up").hide();
+            $("#down").show();
+            window.location.reload();
         }
-        function sortup(){
-                 $("#up").show();
-                $("#down").hide();
+
+        function sortup() {
+            $("#up").show();
+            $("#down").hide();
 
         }
+
     </script>
 
 </head>
@@ -203,22 +283,34 @@
         </div>
     </div>
     <table class="table">
+        <div class="col-auto my-1">
+            <select class="custom-select mr-sm-2 select" id="inlineFormCustomSelect">
+                <option selected>게시글 수</option>
+                <option value="1">5</option>
+                <option value="2">10</option>
+                <option value="3">15</option>
+            </select>
+        </div>
         <thead>
         <tr>
             <th scope="col">#</th>
             <th scope="col">타이틀</th>
             <th scope="col">날짜</th>
-            <th scope="col">조회<i class="fa fa-arrow-circle-up" style="display: none" aria-hidden="true" onclick="sortdown()" id="up"></i><i class="fa fa-arrow-circle-down" aria-hidden="true" id="down" onclick="sortup()"></i>
+            <th scope="col">조회<i class="fa fa-arrow-circle-up" style="display: none" aria-hidden="true"
+                                 onclick="sortdown()" id="up"></i><i class="fa fa-arrow-circle-down" aria-hidden="true"
+                                                                     id="down" onclick="sortup()"></i>
             </th>
             <th scope="col">삭제</th>
             <th scope="col">수정</th>
         </tr>
         </thead>
         <tbody id="list-post">
+        <div id="data-container"></div>
         {% for post in posts %}
             <tr>
                 <th scope="col">{{ loop.index }}</th>
-                <th scope="col" ><a href="#" data-toggle="modal" data-target="#exampleModal" onclick="readArticle({{ post.idx }})">{{ post.title }}</a></th>
+                <th scope="col"><a href="#" data-toggle="modal" data-target="#exampleModal"
+                                   onclick="readArticle({{ post.idx }})">{{ post.title }}</a></th>
                 <th scope="col">{{ post.reg_date }}</th>
                 <th scope="col">{{ post.read_count }}</th>
                 <th>
@@ -231,7 +323,32 @@
         {% endfor %}
 
         </tbody>
+
     </table>
+{#    <div id="paging"></div>#}
+        <nav aria-label="..." class="pagination" id="paging">
+            <ul class="pagination">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1<span class="sr-only">(current)</span></a></li>
+                <li class="page-item active">
+                    <a class="page-link" href="#">2 </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                </li>
+            </ul>
+        </nav>
+    <form class="form-inline" method="get" action='/search'>
+        <div class="form-group mx-sm-3 mb-2">
+            <label for="inputPassword2" class="sr-only">Password</label>
+            <input type="text" class="form-control" id="inputPassword2" placeholder="제목" name="search">
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">검색
+        </button>
+    </form>
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="modal-title"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -243,7 +360,9 @@
                     ...
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick="window.location.reload()">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                            onClick="window.location.reload()">Close
+                    </button>
                 </div>
             </div>
         </div>
