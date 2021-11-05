@@ -186,6 +186,7 @@
 
         function readArticle(idx) {
             idx_comment = idx;
+            showComment();
             $.ajax({
                 type: "PUT",
                 url: `/article/${idx}`,
@@ -325,8 +326,7 @@
                     success: function (response) {
                         if (response["result"] == "success") {
                             alert("저장했습니다");
-                            showComment(idx_comment)
-                            window.location.reload();
+                            showComment()
                         } else {
                             alert("서버 오류!");
                         }
@@ -335,22 +335,25 @@
 
         }
 
-        function showComment(idx){
+        function showComment(){
+            $("#modal-comment").empty();
+            $("#comment").val("");
              $.ajax({
                 type: "GET",
-                url: `/comment?idx=${idx}`,
+                url: `/comment?idx=${idx_comment}`,
                 data: {},
                 success: function (response) {
                     console.log(response)
-                    let comment = response['comment']['comment']
-                    let temp_html = `
+                    let comment = response['comment'];
+                    for (let i = 0; i < comment.length; i++){
+                        let temp_html = `
                     <div class="modal-body">
                             <hr>
-                            <p>${comment}</p>
+                            <p>${comment[i]['comment']}</p>
                         </div>`
 
             $("#modal-comment").append(temp_html);
-            $('#comment').val("");
+                    }
                 }
             })
 

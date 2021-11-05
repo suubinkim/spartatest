@@ -184,13 +184,12 @@ def save_comment():
     db.comment.insert_one(post)
     return {"result": "success"}
 
+
 @app.route('/comment', methods=['GET'])
 def get_comment():
     idx = request.args['idx']
-    comment = db.comment.find_one({'idx': int(idx)}, {'_id': False})
+    comment = list(db.comment.find({'idx': idx}, {'_id': False}))
     return jsonify({"comment": comment})
-
-
 
 
 if __name__ == "__main__":
