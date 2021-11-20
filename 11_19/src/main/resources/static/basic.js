@@ -42,21 +42,22 @@ function showArticles() {
         type: "GET",
         url: "/articles",
         success: function (response) {
-
+            console.log(response)
             for (let i = 0; i < response.length; i++) {
                 let article = response[i];
-                makeListPost(article);
+                makeListPost(article,i);
             }
         }
     })
 
 }
 
-function makeListPost(article) {
+
+function makeListPost(article,idx) {
     let tempHtml = ` <tr>
-                      <th scope="row">${article['id']}</th>
-                      <td><a href="/articles/read?id=${article['id']}">${article['title']}</a></td>
-                      <td>0</td>
+                      <th scope="row">${idx+1}</th>
+                      <td><a href="/articles/${article['id']}">${article['title']}</a></td>
+                      <td>${article['comments'].length}</td>
                       <td>${article['createdAt']}</button></td>
                       </tr>
                     `;

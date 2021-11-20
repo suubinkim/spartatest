@@ -14,7 +14,6 @@
 
   <!-- JS -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src = "basic.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
           integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
           crossorigin="anonymous"></script>
@@ -45,7 +44,61 @@
     }
   </style>
   <script>
+    let idx = '';
+    $(document).ready(function () {
+    let url = window.location.href;
+    idx = url.split('/').reverse()[0];
+      showArticle(idx);
+      getComment();
+    });
 
+    function showArticle(){
+      $.ajax({
+        type: "GET",
+        url: `/articles/read/${idx}`,
+        success: function (response) {
+          $("#title").append(`<p>${response['title']}</p>`)
+          $("#content").append(`<p>${response['content']}</p>`)
+
+        }
+      })
+
+    }
+    function setArticleComment(){
+      let comment = {
+        "idx":idx,
+        "comment":$("#comment").val()
+      }
+      $.ajax({
+        type: "POST",
+        url: "/articles/comment",
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify(comment),
+        success: function (response) {
+          alert("댓글 작성 완료!")
+          window.location.reload();
+
+
+        }
+      })
+    }
+
+    function getComment(){
+      $.ajax({
+        type: "GET",
+        url: `/articles/read/${idx}`,
+        success: function (response) {
+          console.log(response)
+          for (let i = 0; i < response['comments'].length; i++) {
+            let tempHtml = `<div class="alert alert-secondary" role="alert">
+                    ${response['comments'][i]['comment']}
+                  </div>`;
+            $("#comment-list").append(tempHtml);
+          }
+        }
+      })
+
+    }
   </script>
 
 </head>

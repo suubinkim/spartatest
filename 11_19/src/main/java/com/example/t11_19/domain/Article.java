@@ -3,11 +3,14 @@ package com.example.t11_19.domain;
 import com.example.t11_19.dto.ArticleRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 public class Article extends Timestamped {
 
@@ -20,6 +23,9 @@ public class Article extends Timestamped {
 
     @Column(nullable = false)
     private String content;
+
+    @OneToMany(mappedBy = "article")
+    private List<Comment> comments;
 
 
     public Article(ArticleRequestDto requestDto){
