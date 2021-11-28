@@ -107,7 +107,7 @@
 
             let tempHtml = ` <tr>
                       <th scope="row">${index}</th>
-                      <td><a href="/view?idx=${article['idx']}">${article['title']}</td>
+                      <td><a href="/articles/${article['id']}">${article['title']}</td>
                       <td>${article['comments'].length}</td>
                       <td>${tags}</td>
                       <td>${article['createdAt']}</td>

@@ -18,8 +18,7 @@ public class ArticleController {
 
     @PostMapping("/articles")
     public Article createArticle(@RequestBody ArticleRequestDto requestDto){
-        Article article = articleService.createArticle(requestDto);
-        return article;
+        return articleService.createArticle(requestDto);
     }
 
     @GetMapping("/articles")
