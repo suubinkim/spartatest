@@ -22,9 +22,9 @@ public class UserService {
     }
 
     public void registerUser(SignupRequestDto requestDto) {
-        String userid = requestDto.getUserid();
+        String username = requestDto.getUsername();
         // 회원 ID 중복 확인
-        Optional<User> found = userRepository.findByUserid(userid);
+        Optional<User> found = userRepository.findByusername(username);
         if (found.isPresent()) {
             throw new IllegalArgumentException("중복된 사용자 ID 가 존재합니다.");
         }
@@ -33,7 +33,7 @@ public class UserService {
         // 사용자 ROLE 확인
         UserRole role = UserRole.USER;
 
-        User user = new User(userid, password, role);
+        User user = new User(username, password, role);
         userRepository.save(user);
     }
 }
